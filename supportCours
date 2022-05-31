@@ -1,0 +1,54 @@
+dÃ©ployer gke en cli
+===================
+
+On va dÃ©ja exportÃ© certaines  variables.
+export PROJET=$(gcloud info --format='value(config.project)') 
+export ZONE=us-central1-b
+export CLUSTER=eazytraining-cluster
+
+
+gcloud config set project $PROJET
+gcloud config set compute/zone $ZONE
+
+gcloud config list project
+gcloud config list compute/zone
+Step 3
+Assurez-vous que les API suivantes sont activÃ©es dans Google Cloud Console :
+â€¢ API GKE
+â€¢ API de registre de conteneurs
+â€¢ API Cloud Build
+â€¢ API Cloud Source Repositories
+
+gcloud services enable container.googleapis.com \
+    containerregistry.googleapis.com \
+    cloudbuild.googleapis.com \
+    sourcerepo.googleapis.com
+Step 4
+
+on va maintenant crÃ©er notre cluster kubernetes 
+
+gcloud container clusters create ${CLUSTER} \
+    --project=${PROJET} \
+    --zone=${ZONE} \
+    --scopes "https://www.googleapis.com/auth/projecthosting,storage-rw"
+
+on recupere le PROJECT_NUMBER
+export PROJECT_NUMBER="$(gcloud projects describe \
+    $(gcloud config get-value core/project -q) --format='get(projectNumber)')"
+
+	ajouter le role developeur kubernetes a cloud build
+gcloud projects add-iam-policy-binding ${PROJET} \
+    --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
+    --role=roles/container.developer
+Your environment is ready!
+
+
+sources de la formation 
+========================
+
+https://github.com/fallewi/gcp-eazytraining.git
+
+
+Projet file rouge 
+
+une compagnie de service veut developer un site web et veulent mettre en place un processus ci cd pour deployer en continue afin que les clients puissant avoir acces aux nouvelles fonctionalités en tres peu de temps 

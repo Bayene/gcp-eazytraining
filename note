@@ -1,0 +1,23 @@
+- IAM identity Acces Management gere toute la partie identite et droit d'acces...
+elle permet de controler les different resource cloud et gerer les droits d'acces des utilisateur 
+
+
+- Module 03 : Cloud source Repository 
+
+
+
+
+
+
+
+
+
+
+
+
+GIT ETAPE 
+
+	1 git clone https//............
+	2 git add .
+	3 git commit -m "message" 
+	4 git push origin master 
